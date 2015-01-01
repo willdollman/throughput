@@ -6,6 +6,7 @@ use strict;
 use File::Copy;
 use File::Spec::Functions qw( catfile );
 use List::Util qw( sum );
+use Text::CSV;
 use Time::HiRes qw( time );
 use YAML qw( LoadFile );
 
@@ -23,6 +24,15 @@ else {
 }
 chomp $test_name;
 print "Running test '$test_name'\n";
+
+# Write header fields to file
+# Not ideal, the run # should be automated
+open(my $o_fh, ">:encoding(utf8)", "$test_name.csv") or die "$test_name.csv: $!";
+my $csv = Text::CSV->new;
+my $fields = [ 'location', 'run 1', 'run 2', 'run 3', 'average' ];
+$csv->print($o_fh, $fields);
+print $o_fh "\r\n";
+close($o_fh);
 
 # Compute approximate throughput
 my $approx_throughput = get_throughput('10');
@@ -45,6 +55,19 @@ while (1) {
     my $average_throughput = sum(@throughputs) / $runs;
     print "\nAverage: ", pretty_throughput($average_throughput), "\n";
 
+    # Write location, throughputs and average to a line in a csv file
+    # This is not exactly the nicest way to do it
+    open(my $o_fh, ">>:encoding(utf8)", "$test_name.csv") or die "$test_name.csv: $!";
+    my $csv_entries = [
+        $location,
+        $throughputs[0],
+        $throughputs[1],
+        $throughputs[2],
+        $average_throughput,
+    ];
+    $csv->print($o_fh, $csv_entries);
+    print $o_fh "\r\n";
+    close($o_fh);
 }
 
 ### Start subroutines
