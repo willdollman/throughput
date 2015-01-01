@@ -5,6 +5,7 @@ use strict;
 
 use File::Copy;
 use File::Spec::Functions qw( catfile );
+use Time::HiRes qw( time );
 use YAML qw( LoadFile );
 
 # Load config
@@ -74,10 +75,14 @@ sub copy_and_time {
     print "Copying\n\t$filename\nto\n\t$dest_filename\n";
 
     # Start timer
+    my $start = time;
 
     # Copy file
     copy($filename, $dest_filename);
 
     # Stop timer
+    my $end = time;
+    my $duration = $end - $start;
 
+    return $duration;
 }
