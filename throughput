@@ -24,16 +24,19 @@ chomp $test_name;
 print "Running test '$test_name'\n";
 
 # Compute approximate throughput
-my $approx_throughput = get_approx_throughput();
+my $approx_throughput = get_throughput('10');
+printf "Approximate throughput is %.2f MB/s\n", $approx_throughput;
+
+my $throughput = get_throughput('100');
+printf "Throughput is %.2f MB/s\n", $throughput;
 
 ### Start subroutines
 
-# Copy a small file to compute approximate thoughput
-sub get_approx_throughput {
-    print "Running a quick benchmark test\n";
+# Copy a file to compute thoughput
+sub get_throughput {
+    my $size = shift;
 
     # Generate a 10mb file
-    my $size = 50;
     my $benchmark_filename = generate_file($size);
 
     # Copy file and time
@@ -41,7 +44,6 @@ sub get_approx_throughput {
 
     # Compute network speed
     my $throughput = compute_throughput($size, $duration);
-    printf "Approximate throughput is %.2f MB/s\n", $throughput;
 
     return $throughput;
 }
