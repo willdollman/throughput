@@ -50,7 +50,7 @@ sub generate_file {
     return $filename;
 }
 
-# Cleans up a given file by erasing it
+# Clean up a given file by erasing it
 sub remove_file {
     my $filename = shift;
 }
@@ -74,8 +74,6 @@ sub copy_and_time {
         warn "Destination file already exists - removing\n";
         unlink $dest_filename;
     }
-
-    print "Copying\n\t$filename\nto\n\t$dest_filename\n";
 
     # Start timer
     my $start = time;
