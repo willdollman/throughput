@@ -89,3 +89,14 @@ sub copy_and_time {
 
     return $duration;
 }
+
+# Takes size in MegaBytes and time in seconds
+# Returns throughput in MB/s
+sub compute_throughput {
+    my $size = shift;
+    my $duration = shift;
+
+    my $throughput = $size/$duration;
+
+    return $throughput;
+}
