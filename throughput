@@ -25,10 +25,10 @@ print "Running test '$test_name'\n";
 
 # Compute approximate throughput
 my $approx_throughput = get_throughput('10');
-printf "Approximate throughput is %.2f MB/s\n", $approx_throughput;
+pretty_throughput($approx_throughput);
 
 my $throughput = get_throughput('100');
-printf "Throughput is %.2f MB/s\n", $throughput;
+pretty_throughput($throughput);
 
 ### Start subroutines
 
@@ -114,4 +114,10 @@ sub compute_throughput {
     my $throughput = $size/$duration;
 
     return $throughput;
+}
+
+sub pretty_throughput {
+    my $throughput = shift;
+
+    printf "Throughput is %.2f MB/s\n", $throughput;
 }
