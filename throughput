@@ -88,7 +88,7 @@ sub copy_and_time {
 
     # Remove destination file if it exists?
     if (-e $dest_filename) {
-        warn "Destination file already exists - removing\n";
+        warn "Destination file already exists - removing\n" if $config->{verbose};
         unlink $dest_filename;
     }
 
