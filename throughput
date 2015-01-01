@@ -17,11 +17,20 @@ sub get_approx_throughput {
 
 }
 
-# Generate file of a given size
+# Generate a file of a given size (in megabytes)
+# Files will eventually be pseudorandom to prevent compression
 # Returns filename
 sub generate_file {
     my $size = shift;
 
+    my $filename = "$size.benchmark";
+
+    open(my $fh, '>', $filename);
+    # 1024 bytes in a kilobyte, 1024 kilobytes in a megabyte
+    print $fh 'x' x (1024 * 1024 * $size);
+    close($fh);
+
+    return $filename;
 }
 
 # Cleans up a given file by erasing it
