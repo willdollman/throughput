@@ -3,9 +3,20 @@
 use warnings;
 use strict;
 
-#print "Enter name of this test run: ";
-#my $test_name = <STDIN>;
-my $test_name = "virgin_router";
+use YAML qw( LoadFile );
+
+# Load config
+my $config = LoadFile('config.yaml');
+
+# Get name of test run
+my $test_name;
+if ($config->{debug}) {
+    $test_name = 'debug_test';
+}
+else {
+    $test_name = <STDIN>;
+    chomp $test_name;
+}
 chomp $test_name;
 print "Running test '$test_name'\n";
 
