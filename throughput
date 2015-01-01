@@ -3,6 +3,8 @@
 use warnings;
 use strict;
 
+use File::Copy;
+use File::Spec::Functions qw( catfile );
 use YAML qw( LoadFile );
 
 # Load config
@@ -47,4 +49,35 @@ sub generate_file {
 # Cleans up a given file by erasing it
 sub remove_file {
     my $filename = shift;
+}
+
+# Takes a filename, and copies it to the destination
+# Returns in the time taken to copy the file
+sub copy_and_time {
+    my $filename = shift;
+
+    # Generate destination filename
+    die "No 'dest_path' in config.yaml" unless $config->{dest_path};
+    my $dest_filename = catfile($config->{dest_path}, $filename);
+
+    # Check file exists
+    if (! -e $filename) {
+        warn "File '$filename' does not exist - skipping\n";
+    }
+
+    # Remove destination file if it exists?
+    if (-e $dest_filename) {
+        warn "Destination file already exists - removing\n";
+        unlink $dest_filename;
+    }
+
+    print "Copying\n\t$filename\nto\n\t$dest_filename\n";
+
+    # Start timer
+
+    # Copy file
+    copy($filename, $dest_filename);
+
+    # Stop timer
+
 }
