@@ -1,2 +1,3 @@
 dest_path: /Volumes/Example Folder
-debug: 1
+debug: 0
+verbose: 0
