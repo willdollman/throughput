@@ -5,6 +5,7 @@ use strict;
 
 use File::Copy;
 use File::Spec::Functions qw( catfile );
+use List::Util qw( sum );
 use Time::HiRes qw( time );
 use YAML qw( LoadFile );
 
@@ -25,10 +26,26 @@ print "Running test '$test_name'\n";
 
 # Compute approximate throughput
 my $approx_throughput = get_throughput('10');
-pretty_throughput($approx_throughput);
+print "Approximate throughput is ", pretty_throughput($approx_throughput), "\n";
 
-my $throughput = get_throughput('100');
-pretty_throughput($throughput);
+while (1) {
+    $|++; # flush buffer immediately
+    print "Enter location name: ";
+    my $location = <STDIN>;
+    chomp $location;
+
+    # Run benchmark 3 times and average results
+    my $runs = 3;
+    my @throughputs;
+    print "Throughputs for $location ($runs runs) are: ";
+    for my $i (0..$runs-1) {
+        $throughputs[$i] = get_throughput('100');
+        print pretty_throughput($throughputs[$i]), " ";
+    }
+    my $average_throughput = sum(@throughputs) / $runs;
+    print "\nAverage: ", pretty_throughput($average_throughput), "\n";
+
+}
 
 ### Start subroutines
 
