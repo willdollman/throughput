@@ -1,0 +1,30 @@
+#!/usr/bin/perl
+
+use warnings;
+use strict;
+
+#print "Enter name of this test run: ";
+#my $test_name = <STDIN>;
+my $test_name = "virgin_router";
+chomp $test_name;
+print "Running test '$test_name'\n";
+
+my $approx_throughput = get_approx_throughput();
+
+# Copy a small file to compute approximate thoughput
+sub get_approx_throughput {
+    print "Running a quick benchmark test";
+
+}
+
+# Generate file of a given size
+# Returns filename
+sub generate_file {
+    my $size = shift;
+
+}
+
+# Cleans up a given file by erasing it
+sub remove_file {
+    my $filename = shift;
+}
