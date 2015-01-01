@@ -19,11 +19,12 @@ if ($config->{debug}) {
     $test_name = 'debug_test';
 }
 else {
+    print "Enter test name: ";
     $test_name = <STDIN>;
     chomp $test_name;
 }
 chomp $test_name;
-print "Running test '$test_name'\n";
+print "Writing to '$test_name.csv'\n";
 
 # Write header fields to file
 # Not ideal, the run # should be automated
