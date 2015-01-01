@@ -23,12 +23,27 @@ else {
 chomp $test_name;
 print "Running test '$test_name'\n";
 
+# Compute approximate throughput
 my $approx_throughput = get_approx_throughput();
+
+### Start subroutines
 
 # Copy a small file to compute approximate thoughput
 sub get_approx_throughput {
-    print "Running a quick benchmark test";
+    print "Running a quick benchmark test\n";
 
+    # Generate a 10mb file
+    my $size = 50;
+    my $benchmark_filename = generate_file($size);
+
+    # Copy file and time
+    my $duration = copy_and_time($benchmark_filename);
+
+    # Compute network speed
+    my $throughput = compute_throughput($size, $duration);
+    printf "Approximate throughput is %.2f MB/s\n", $throughput;
+
+    return $throughput;
 }
 
 # Generate a file of a given size (in megabytes)
