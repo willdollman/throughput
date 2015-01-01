@@ -24,11 +24,15 @@ else {
     chomp $test_name;
 }
 chomp $test_name;
-print "Writing to '$test_name.csv'\n";
+my $output_file = $test_name . ".csv";
+print "Writing to '$output_file'\n";
+if (-e $output_file) {
+    die "Output file '$output_file' already exists - I won't overwrite it\n";
+}
 
 # Write header fields to file
 # Not ideal, the run # should be automated
-open(my $o_fh, ">:encoding(utf8)", "$test_name.csv") or die "$test_name.csv: $!";
+open(my $o_fh, ">:encoding(utf8)", "$output_file") or die "$output_file: $!";
 my $csv = Text::CSV->new;
 my $fields = [ 'location', 'run 1', 'run 2', 'run 3', 'average' ];
 $csv->print($o_fh, $fields);
@@ -58,7 +62,7 @@ while (1) {
 
     # Write location, throughputs and average to a line in a csv file
     # This is not exactly the nicest way to do it
-    open(my $o_fh, ">>:encoding(utf8)", "$test_name.csv") or die "$test_name.csv: $!";
+    open(my $o_fh, ">>:encoding(utf8)", "$output_file") or die "$output_file: $!";
     my $csv_entries = [
         $location,
         $throughputs[0],
