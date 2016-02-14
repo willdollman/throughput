@@ -1,0 +1,38 @@
+#!/usr/bin/env perl
+
+# When on a wireless network with multiple access points,
+# determine which access point you're currently connected to.
+# OS X only, as it requires the 'airport' command
+
+# Fill out the ap-config.yaml file with the BSSID addresses and
+# names for each access point (see example config)
+
+use warnings;
+use strict;
+
+use Data::Dumper;
+use YAML::XS qw( Dump LoadFile );
+
+# Load access point configuration
+my $config_file = 'ap-config.yaml';
+my $config = LoadFile 'ap-config.yaml';
+
+# Grab network information using network command
+my $airport_config = qx( airport -I );
+
+# Grab network SSID and BSSID
+my ($ssid)  = $airport_config =~ /\sSSID: (.*)/;
+my ($bssid) = $airport_config =~ /\sBSSID: (.*)/;
+my ($tx_rate)  = $airport_config =~ /lastTxRate: (.*)/;
+my ($max_rate) = $airport_config =~ /maxRate: (.*)/;
+
+die "Unable to get SSID or BSSID of access point - are you connected to a network?\n" unless ($ssid && $bssid);
+
+if ($config->{$bssid}) {
+    print "Connected to access point '$config->{$bssid}'\n";
+    print "Transmit rate is $tx_rate/$max_rate Mbps\n";
+}
+else {
+    print "No BSSID in config with id $bssid\n";
+    print "Add the following to $config_file:\n  \"$bssid\": \"Access Point name\"\n";
+}
