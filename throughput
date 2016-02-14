@@ -11,7 +11,7 @@ use Time::HiRes qw( time );
 use YAML qw( LoadFile );
 
 # Load config
-my $config = LoadFile('config.yaml');
+my $config = LoadFile('throughput-config.yaml');
 
 # Get name of test run
 my $test_name;
